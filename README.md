@@ -353,31 +353,35 @@ The following api routes will be implemented:
 
 - `403` if the user is not logged in
 
-#### `POST /api/follow/:username` - Let the user follow another user
+#### `POST /api/follow` - Let the user follow another user
+
+**Body**
+
+- `followee` _{string}_ - the user to follow
 
 **Returns**
 
 - A success message
-- The list that the user follows
+- The new follow object
 
 **Throws**
 
+- `400` if the `followee` is empty
 - `403` if the user is not logged in
-- `404` if `username` cannot be found
-- `409` if the user is alreading following `username`
+- `404` if the `followee` cannot be found
+- `409` if the user is already following `followee` or the user is `followee`
 
-#### `DELETE /api/follow/:username` - Let the user unfollow another user
+#### `DELETE /api/follow/:followee` - Let the user unfollow another user
 
 **Returns**
 
 - A success message
-- The list that the user follows
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if `username` cannot be found
-- `409` if the user was not following `username`
+- `404` if `followee` cannot be found
+- `409` if the user was not following `followee` or the user is `followee`
 
 #### `GET /api/groups` - Get the user's view groups
 

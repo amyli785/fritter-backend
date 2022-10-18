@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
   <script src="/scripts/user.js"></script>
+  <script src="/scripts/follow.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -74,9 +75,9 @@
         </form>
 
         <form id="view-all-freets">
-            <h3>View All Freets</h3>
-            <input type="submit" value="View All Freets">
-          </form>
+          <h3>View All Freets</h3>
+          <input type="submit" value="View All Freets">
+        </form>
 
         <form id="view-freets-by-author">
           <h3>View Freets By Author</h3>
@@ -116,6 +117,34 @@
             <input id="id" name="id">
           </div>
           <input type="submit" value="Delete Freet">
+        </form>
+
+        <form id="view-followers">
+          <h3>View Followers</h3>
+          <input type="submit" value="View Followers">
+        </form>
+
+        <form id="view-following">
+          <h3>View Following</h3>
+          <input type="submit" value="View Following">
+        </form>
+
+        <form id="follow">
+          <h3>Follow</h3>
+          <div>
+            <label for="followee">Username:</label>
+            <input id="followee" name="followee">
+          </div>
+          <input type="submit" value="Follow">
+        </form>
+
+        <form id="unfollow">
+          <h3>Unfollow</h3>
+          <div>
+            <label for="followee">Username:</label>
+            <input id="followee" name="followee">
+          </div>
+          <input type="submit" value="Unfollow">
         </form>
       </div>
     </section>
