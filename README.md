@@ -2,7 +2,7 @@
 
 Build your own not-quite-[Twitter](https://twitter.com/)!
 
-## Starter Code
+<!-- ## Starter Code
 
   This starter code implements users (with login/sessions), and freets so that you may focus on implementing your own design ideas.
 
@@ -165,49 +165,346 @@ Mongoose allows you to use schema validation if you want to ensure that certain 
   }
 ```
 
-within the schema. This tells us that the `content` field must have type `String`, and that it is required for documents in that collection. A freet must have a `String` type value for the `content` field to be added to the freets collection.
+within the schema. This tells us that the `content` field must have type `String`, and that it is required for documents in that collection. A freet must have a `String` type value for the `content` field to be added to the freets collection. -->
 
 ## API routes
 
-The following api routes have already been implemented for you (**Make sure to document all the routes that you have added.**):
+The following api routes will be implemented:
 
-#### `GET /`
+#### `GET /` - Render the `index.html` file that will be used to interact with the backend
 
-This renders the `index.html` file that will be used to interact with the backend
+#### `POST /api/users` - Create a new user account
 
-#### `GET /api/freets` - Get all the freets
+**Body**
 
-**Returns**
-
-- An array of all freets sorted in descending order by date modified
-
-#### `GET /api/freets?author=USERNAME` - Get freets by author
+- `username` _{string}_ - the user's username
+- `password` _{string}_ - the user's password
 
 **Returns**
 
-- An array of freets created by user with username `author`
+- A success message
+- An object with the created user's details (without password)
 
 **Throws**
 
-- `400` if `author` is not given
-- `404` if `author` is not a recognized username of any user
+- `400` if `username` or `password` is in the wrong format
+- `403` if there is a user already logged in
+- `409` if `username` is already in use
+
+#### `PUT /api/users` - Update the user's profile
+
+**Body** _(no need to add fields that are not being changed)_
+
+- `displayName` _{string}_ - the user's new display name
+- `password` _{string}_ - the user's new password
+
+**Returns**
+
+- A success message
+- An object with the updated user details (without password)
+
+**Throws**
+
+- `400` if `username` or `password` is in the wrong format
+- `403` if the user is not logged in
+- `409` if the `username` is already in use
+
+#### `DELETE /api/users` - Delete user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/rrpicture` - See current profile picture of the user
+
+**Returns**
+
+- The user's current profile picture
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if `username` cannot be found
+
+#### `GET /api/rrpicture/:username` - See current profile picture for the specified user
+
+**Returns**
+
+- The current profile picture of `username`
+
+**Throws**
+
+- `404` if `username` cannot be found
+
+#### `POST /api/rrpicture` - Set a new current profile picture for the user
+
+**Body**
+
+- `picture` _{image}_ - the desired new profile picture
+- `maintainPrevious` _{boolean}_ - whether to store the current profile picture in the list of maintained previous profile pictures (ignored if the current profile picture is `None`)
+
+**Returns**
+
+- A success message
+- The user's new profile picture
+
+**Throws**
+
+- `400` if `picture` is in the wrong format
+- `403` if the user is not logged in
+
+#### `DELETE /api/rrpicture` - Delete the current profile picture of the user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged
+
+#### `GET /api/rrpicture/previous` - Get the user's list of maintained previous profile pictures
+
+**Returns**
+
+- The user's list of maintained previous profile pictures
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `POST /api/rrpicture/previous` - Add a picture to the user's list of maintained previous profile pictures
+
+**Body**
+
+- `picture` _{image}_ - picture to add to the list of previous maintained pictures
+
+**Returns**
+
+- A success message
+- The user's updated list of maintained previous profile pictures
+
+**Throws**
+
+- `400` if `picture` is in the wrong format
+- `403` if the user is not logged in
+
+#### `DELETE /api/rrpicture/previous/:pictureIndex` - Remove the picture from the user's list of maintained previous profile pictures
+
+**Returns**
+
+- A success message
+- The user's updated list of maintained previous profile pictures
+
+**Throws**
+
+- `400` if `pictureIndex` is outside of the indicies of the list of maintained previous profile pictures
+- `403` if the user is not logged in
+
+#### `POST /api/users/session` - Sign in user
+
+**Body**
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with user's details (without password)
+
+**Throws**
+
+- `400` if `username` or `password` is not in correct format or missing in the req
+- `401` if the user login credentials are invalid
+- `403` if the user is already logged in
+
+#### `DELETE /api/users/session` - Sign out user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+
+#### `GET /api/follow/followers` - View the list of who the user's followers are
+
+**Returns**
+
+- The list of followers
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/follow/following` - View the list of who the user is following
+
+**Returns**
+
+- The list that the user follows
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `POST /api/follow/:username` - Let the user follow another user
+
+**Returns**
+
+- A success message
+- The list that the user follows
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if `username` cannot be found
+- `409` if the user is alreading following `username`
+
+#### `DELETE /api/follow/:username` - Let the user unfollow another user
+
+**Returns**
+
+- A success message
+- The list that the user follows
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if `username` cannot be found
+- `409` if the user was not following `username`
+
+#### `GET /api/groups` - Get the user's view groups
+
+**Returns**
+
+- List of group objects
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/groups/:name` - Get the details of the view group
+
+**Returns**
+
+- The group object
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the `name` cannot be found
+
+#### `POST /api/groups` - Make a new view group that views the user
+
+**Body**
+
+- `name` _{string}_ - a name for the group
+
+**Returns**
+
+- A success message
+- The new group object
+
+**Throws**
+
+- `400` if `name` is not in correct format or missing in the req
+- `403` if the user is not logged in
+- `409` if the user already has a group named `name`
+
+#### `PUT /api/groups/:name` - Update the view group with a new member
+
+**Body**
+
+- `username` - the username of the member to add to the group
+
+**Returns**
+
+- A success message
+- The updated viewGroup object
+
+**Throws**
+
+- `400` if `username` is not in correct format or missing in the req
+- `403` if the user is not logged in
+- `404` if the group `name` cannot be found for the user or `username` cannot be found
+- `409` if the group `name` already contains `username`
+
+#### `DELETE /api/groups/:name/:username` - Delete the member from the view group
+
+**Returns**
+
+- A success message
+- The updated viewGroup object
+
+**Throws**
+
+- `400` if `username` is not in correct format or missing in the req
+- `403` if the user is not logged in
+- `404` if the group `name` cannot be found for the user or `username` cannot be found
+- `409` if the group `name` did not contain `username`
+
+#### `DELETE /api/groups/:name` - Delete the view group
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the group `name` cannot be found
+
+#### `GET /api/freets/:freetId` - View the freet
+
+**Returns**
+
+- The freet object
+
+**Throws**
+
+- `404` if `freetId` cannot be found or the user is not a member of the audience of the freet
 
 #### `POST /api/freets` - Create a new freet
 
 **Body**
 
 - `content` _{string}_ - The content of the freet
+- `response-to` _{freetId, None}_ - The freet to which the current freet responds
+- `audience` _{group, None}_ - The audience to which the freet is addressed (and would see the freet)
 
 **Returns**
 
 - A success message
-- A object with the created freet
+- The new freet object
 
 **Throws**
 
+- `400` if the `content`, `response-to`, or `audience` is not in the correct format
 - `403` if the user is not logged in
-- `400` If the freet content is empty or a stream of empty spaces
-- `413` If the freet content is more than 140 characters long
+- `404` if the `response-to` or any of the `audience` cannot be found
+
+<!-- #### `GET /api/freets` - Get all the freets
+
+**Returns**
+
+- An array of all freets sorted in descending order by date modified
+
+#### `GET /api/freets?freeter=USERNAME` - Get freets by freeter
+
+**Returns**
+
+- An array of freets created by user with username `freeter`
+
+**Throws**
+
+- `400` if `freeter` is not given
+- `404` if `freeter` is not a recognized username of any user
 
 #### `DELETE /api/freets/:freetId?` - Delete an existing freet
 
@@ -238,78 +535,20 @@ This renders the `index.html` file that will be used to interact with the backen
 - `404` if the freetId is invalid
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
-- `413` if the new freet content is more than 140 characters long
+- `413` if the new freet content is more than 140 characters long -->
 
-#### `POST /api/users/session` - Sign in user
-
-**Body**
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
+#### `GET /api/filter?expression=EXPRESSION` - Get the freets that match the filter expression
 
 **Returns**
 
-- A success message
-- An object with user's details (without password)
+- List of objects that the user has rights to view that match the expression, in descending order by date posted
 
 **Throws**
 
-- `403` if the user is already logged in
-- `400` if username or password is not in correct format format or missing in the req
-- `401` if the user login credentials are invalid
+- `404` if the `expression` is invalid
 
-#### `DELETE /api/users/session` - Sign out user
+#### `GET /api/feed` - Get the list of tabs for the user
 
 **Returns**
 
-- A success message
-
-**Throws**
-
-- `403` if user is not logged in
-
-#### `POST /api/users` - Create an new user account
-
-**Body**
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with the created user's details (without password)
-
-**Throws**
-
-- `403` if there is a user already logged in
-- `400` if username or password is in the wrong format
-- `409` if username is already in use
-
-#### `PUT /api/users` - Update a user's profile
-
-**Body** _(no need to add fields that are not being changed)_
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with the update user details (without password)
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` if username or password is in the wrong format
-- `409` if the username is already in use
-
-#### `DELETE /api/users` - Delete user
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if the user is not logged in
+- List of tab objects, including only the default "all" tab if the user is not logged in
