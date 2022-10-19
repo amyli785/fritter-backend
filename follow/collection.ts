@@ -41,18 +41,37 @@ class FollowCollection{
    *
    * @param {string} followerId - The follower id
 	 * @param {string} followeeId - The followee id
-   * @return {Promise<HydratedDocument<Follow>> | Promise<null>} - The user with the given username, if any
+   * @return {Promise<HydratedDocument<Follow>> | Promise<null>} - The follow, if any
    */
   static async findOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<HydratedDocument<Follow>> {
-    return FollowModel.findOne({followerId: followerId, followeeId: followeeId});
+		const follow = await FollowModel.findOne({followerId: followerId, followeeId: followeeId});
+		await follow.populate('followerId');
+		await follow.populate('followeeId');
+    return follow;
   }
 
+	/**
+	 * Find all follows by followee id.
+	 * 
+	 * @param followeeId - the followee id
+	 * @returns {Promise<HydratedDocument<Follow>[]>} - The follows, if any
+	 */
 	static async findAllFollowers(followeeId: Types.ObjectId | string): Promise<Array<HydratedDocument<Follow>>> {
-		return FollowModel.find({followeeId: followeeId});
+		const follows = await FollowModel.find({followeeId: followeeId});
+		const followsPopulated = await Promise.all(follows.map((follow) => follow.populate('followerId')));
+		return followsPopulated;
 	}
 
+	/**
+	 * Find all follows by follower id.
+	 * 
+	 * @param followerId 
+	 * @returns {Promise<HydratedDocument<Follow>[]>} - The follows, if any
+	 */
 	static async findAllFollowees(followerId: Types.ObjectId | string): Promise<Array<HydratedDocument<Follow>>> {
-		return FollowModel.find({followerId: followerId});
+		const follows = await FollowModel.find({followerId: followerId});
+		const followsPopulated = await Promise.all(follows.map((follow) => follow.populate('followeeId')));
+		return followsPopulated;
 	}
 }
 

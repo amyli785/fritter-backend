@@ -23,7 +23,7 @@ router.get(
 	],
 	async (req: Request, res: Response) => {
 		const allFollowers = await FollowCollection.findAllFollowers(req.session.userId as string);
-		const response = allFollowers.map(util.constructFollowResponse); // TODO return list of users
+		const response = allFollowers.map(util.constructFollower);
 		res.status(200).json(response);
 	}
 )
@@ -43,7 +43,7 @@ router.get(
 	],
 	async (req: Request, res: Response) => {
 		const allFollowees = await FollowCollection.findAllFollowees(req.session.userId as string);
-		const response = allFollowees.map(util.constructFollowResponse); // TODO return list of users
+		const response = allFollowees.map(util.constructFollowee);
 		res.status(200).json(response);
 	}
 )
@@ -73,7 +73,7 @@ router.post(
 
 		res.status(201).json({
 		  message: 'Your follow was created successfully.',
-		  follow: util.constructFollowResponse(follow)
+		  follow: util.constructFollowResponse(follow),
 		});
 	}
 )
