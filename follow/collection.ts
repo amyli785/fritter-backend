@@ -6,9 +6,9 @@ class FollowCollection{
 	/**
 	 * Add a follow to the collection
 	 * 
-	 * @param followerId 
-	 * @param followeeId
-	 * @returns 
+	 * @param {string} followerId - the id of the follower
+	 * @param {string} followeeId - the id of the followee
+	 * @returns {Promise<HydratedDocument<Follow>>} - the newly created follow
 	 */
 	static async addOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<HydratedDocument<Follow>> {
 		const follow = new FollowModel({
@@ -24,9 +24,9 @@ class FollowCollection{
 	/**
 	 * Delete a follow with given followerId and followeeUsername.
 	 * 
-	 * @param followerId 
-	 * @param followeeId
-	 * @returns 
+	 * @param {string} followerId - the id of the follower
+	 * @param {string} followeeId - the id of the followee
+	 * @returns {PRomise<Boolean>} - true if the follow has been deleted, false otherwise
 	 */
 	static async deleteOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<boolean> {
 		const follow = await FollowModel.deleteOne({followerId: followerId, followeeId: followeeId});
@@ -62,7 +62,7 @@ class FollowCollection{
 	/**
 	 * Find all follows by follower id.
 	 * 
-	 * @param followerId 
+	 * @param followerId - the follower id
 	 * @returns {Promise<HydratedDocument<Follow>[]>} - The follows, if any
 	 */
 	static async findAllFollowees(followerId: Types.ObjectId | string): Promise<Array<HydratedDocument<Follow>>> {
