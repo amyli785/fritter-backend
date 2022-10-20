@@ -2,9 +2,6 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Follow} from './model';
 import FollowModel from './model';
 
-/**
- * TODO
- */
 class FollowCollection{
 	/**
 	 * Add a follow to the collection

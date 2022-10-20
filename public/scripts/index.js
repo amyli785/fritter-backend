@@ -43,6 +43,12 @@ const formsAndHandlers = {
   'view-following': viewFollowing,
   'follow': follow,
   'unfollow': unfollow,
+  'view-groups': viewGroups,
+  'create-group': createGroup,
+  'view-group': viewGroup,
+  'delete-group': deleteGroup,
+  'add-group-member': addGroupMember,
+  'delete-group-member': deleteGroupMember,
 };
 
 // Attach handlers to forms

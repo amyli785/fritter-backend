@@ -219,6 +219,34 @@ The following api routes will be implemented:
 
 - `403` if the user is not logged in
 
+#### `POST /api/users/session` - Sign in user
+
+**Body**
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with user's details (without password)
+
+**Throws**
+
+- `400` if `username` or `password` is not in correct format or missing in the req
+- `401` if the user login credentials are invalid
+- `403` if the user is already logged in
+
+#### `DELETE /api/users/session` - Sign out user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+
 #### `GET /api/rrpicture` - See current profile picture of the user
 
 **Returns**
@@ -305,34 +333,6 @@ The following api routes will be implemented:
 - `400` if `pictureIndex` is outside of the indicies of the list of maintained previous profile pictures
 - `403` if the user is not logged in
 
-#### `POST /api/users/session` - Sign in user
-
-**Body**
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with user's details (without password)
-
-**Throws**
-
-- `400` if `username` or `password` is not in correct format or missing in the req
-- `401` if the user login credentials are invalid
-- `403` if the user is already logged in
-
-#### `DELETE /api/users/session` - Sign out user
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if user is not logged in
-
 #### `GET /api/follow/followers` - View the list of who the user's followers are
 
 **Returns**
@@ -387,22 +387,11 @@ The following api routes will be implemented:
 
 **Returns**
 
-- List of group objects
+- The user's list of group objects, including the group members
 
 **Throws**
 
 - `403` if the user is not logged in
-
-#### `GET /api/groups/:name` - Get the details of the view group
-
-**Returns**
-
-- The group object
-
-**Throws**
-
-- `403` if the user is not logged in
-- `404` if the `name` cannot be found
 
 #### `POST /api/groups` - Make a new view group that views the user
 
@@ -421,37 +410,16 @@ The following api routes will be implemented:
 - `403` if the user is not logged in
 - `409` if the user already has a group named `name`
 
-#### `PUT /api/groups/:name` - Update the view group with a new member
-
-**Body**
-
-- `username` - the username of the member to add to the group
+#### `GET /api/groups/:name` - Get the details of the view group
 
 **Returns**
 
-- A success message
-- The updated viewGroup object
+- The group object, including the list of group members.
 
 **Throws**
 
-- `400` if `username` is not in correct format or missing in the req
 - `403` if the user is not logged in
-- `404` if the group `name` cannot be found for the user or `username` cannot be found
-- `409` if the group `name` already contains `username`
-
-#### `DELETE /api/groups/:name/:username` - Delete the member from the view group
-
-**Returns**
-
-- A success message
-- The updated viewGroup object
-
-**Throws**
-
-- `400` if `username` is not in correct format or missing in the req
-- `403` if the user is not logged in
-- `404` if the group `name` cannot be found for the user or `username` cannot be found
-- `409` if the group `name` did not contain `username`
+- `404` if the group `name` cannot be found or does not "view" the user
 
 #### `DELETE /api/groups/:name` - Delete the view group
 
@@ -462,7 +430,39 @@ The following api routes will be implemented:
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the group `name` cannot be found
+- `404` if the group `name` cannot be found or does not "view" the user
+
+#### `POST /api/groups/:name` - Update the view group with a new member
+
+**Body**
+
+- `member` _{string}_ - the username of the member to add to the group
+
+**Returns**
+
+- A success message
+- The updated group object, including the updated list of group members
+
+**Throws**
+
+- `400` if `member` is missing in the req
+- `403` if the user is not logged in
+- `404` if the group `name` cannot be found for the user or `member` cannot be found
+- `409` if the group `name` already contains `member` or `member` is the user
+
+#### `DELETE /api/groups/:name/:member` - Delete the member from the view group
+
+**Returns**
+
+- A success message
+- The updated group object, including the updated list of group members
+
+**Throws**
+
+- `400` if `member` is missing in the req
+- `403` if the user is not logged in
+- `404` if the group `name` cannot be found for the user or `member` cannot be found
+- `409` if the group `name` did not contain `member` or `member` is the user
 
 #### `GET /api/freets/:freetId` - View the freet
 
