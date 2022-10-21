@@ -245,47 +245,47 @@ The following api routes will be implemented:
 
 **Throws**
 
-- `403` if user is not logged in
+- `403` if the user is not logged in
 
-#### `GET /api/rrpicture` - See current profile picture of the user
+#### `GET /api/rrpictures/current` - See current profile picture of the user
 
 **Returns**
 
-- The user's current profile picture
+- The user's current profile picture, if any
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if `username` cannot be found
 
-#### `GET /api/rrpicture/:username` - See current profile picture for the specified user
+#### `GET /api/rrpictures/current/:username` - See current profile picture for the specified user
 
 **Returns**
 
-- The current profile picture of `username`
+- The current profile picture of `username`, if any
 
 **Throws**
 
 - `404` if `username` cannot be found
 
-#### `POST /api/rrpicture` - Set a new current profile picture for the user
+#### `POST /api/rrpictures/current` - Set a new current profile picture for the user
 
 **Body**
 
-- `picture` _{image}_ - the desired new profile picture
-- `maintainPrevious` _{boolean}_ - whether to store the current profile picture in the list of maintained previous profile pictures (ignored if the current profile picture is `None`)
+- `picture` _{string}_ - the desired picture (raw, a path, or a link) represented as a string
+- `pictureType` _{string}_ - the type of the picture, one of: "RawString", "Path", "Link"
+- `maintainPrevious` _{boolean}_ - whether to store the current profile picture in the list of maintained previous profile pictures (ignored if the current profile picture is `None`); defaults to `false`
 
 **Returns**
 
 - A success message
-- The user's new profile picture
+- An object with the details of the new profile picture
 
 **Throws**
 
-- `400` if `picture` is in the wrong format
+- `400` if `picture` or `pictureType` is missing in the req or `pictureType` is an invalid value
 - `403` if the user is not logged in
 
-#### `DELETE /api/rrpicture` - Delete the current profile picture of the user
+#### `DELETE /api/rrpictures/current` - Delete the current profile picture of the user
 
 **Returns**
 
@@ -293,45 +293,47 @@ The following api routes will be implemented:
 
 **Throws**
 
-- `403` if the user is not logged
+- `403` if the user is not logged in
+- `409` if the user does not have a current profile picture
 
-#### `GET /api/rrpicture/previous` - Get the user's list of maintained previous profile pictures
+#### `GET /api/rrpictures/previous` - Get the user's list of maintained previous profile pictures
 
 **Returns**
 
-- The user's list of maintained previous profile pictures
+- A list of objects with the details of the user's maintained previous profile pictures
 
 **Throws**
 
 - `403` if the user is not logged in
 
-#### `POST /api/rrpicture/previous` - Add a picture to the user's list of maintained previous profile pictures
+#### `POST /api/rrpictures/previous` - Add a picture to the user's list of maintained previous profile pictures
 
 **Body**
 
-- `picture` _{image}_ - picture to add to the list of previous maintained pictures
+- `picture` _{string}_ - the desired picture (raw, a path, or a link) represented as a string
+- `pictureType` _{string}_ - the type of the picture, one of: "RawString", "Path", "Link"
 
 **Returns**
 
 - A success message
-- The user's updated list of maintained previous profile pictures
+- A list of objects with the details of the user's updated maintained previous profile pictures
 
 **Throws**
 
-- `400` if `picture` is in the wrong format
+- `400` if `picture` or `pictureType` is in the wrong format or missing in the req
 - `403` if the user is not logged in
 
-#### `DELETE /api/rrpicture/previous/:pictureIndex` - Remove the picture from the user's list of maintained previous profile pictures
+#### `DELETE /api/rrpictures/previous/:rrpictureId` - Remove the picture from the user's list of maintained previous profile pictures
 
 **Returns**
 
 - A success message
-- The user's updated list of maintained previous profile pictures
+- A list of objects with the details of the user's updated maintained previous profile pictures
 
 **Throws**
 
-- `400` if `pictureIndex` is outside of the indicies of the list of maintained previous profile pictures
 - `403` if the user is not logged in
+- `404` if `rrpictureId` cannot be found for the user
 
 #### `GET /api/follow/followers` - View the list of who the user's followers are
 

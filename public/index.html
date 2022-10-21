@@ -5,10 +5,11 @@
   <meta name="author" content="6.170 Staff">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
-  <script src="/scripts/freet.js"></script>
   <script src="/scripts/user.js"></script>
+  <script src="/scripts/rrpicture.js"></script>
   <script src="/scripts/follow.js"></script>
   <script src="/scripts/group.js"></script>
+  <script src="/scripts/freet.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -75,49 +76,67 @@
           <input type="submit" value="Sign out">
         </form>
 
-        <form id="view-all-freets">
-          <h3>View All Freets</h3>
-          <input type="submit" value="View All Freets">
+        <form id="view-picture">
+          <h3>View My Picture</h3>
+          <input type="submit" value="View My Picture">
         </form>
 
-        <form id="view-freets-by-author">
-          <h3>View Freets By Author</h3>
+        <form id="view-picture-other">
+          <h3>View Other Picture</h3>
           <div>
-            <label for="author">Author:</label>
-            <input id="author" name="author">
+            <label for="username">Username:</label>
+            <input id="username" name="username">
           </div>
-          <input type="submit" value="View Freets By Author">
+          <input type="submit" value="View Other Picture">
         </form>
 
-        <form id="create-freet">
-          <h3>Create Freet</h3>
+        <form id="change-picture">
+          <h3>Change Current Picture</h3>
           <div>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content"></textarea>
+            <label for="picture">Picture:</label>
+            <input id="picture" name="picture">
           </div>
-          <input type="submit" value="Create Freet">
+          <div>
+            <label for="pictureType">Picture Type:</label>
+            <input id="pictureType" name="pictureType">
+          </div>
+          <div>
+            <label for="maintainPrevious">Maintain Previous?</label>
+            <input id="maintainPrevious" name="maintainPrevious" type="checkbox">
+          </div>
+          <input type="submit" value="Change Current Picture">
         </form>
 
-        <form id="edit-freet">
-          <h3>Edit Freet</h3>
-          <div>
-            <label for="id">ID:</label>
-            <input id="id" name="id">
-          </div>
-          <div>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content"></textarea>
-          </div>
-          <input type="submit" value="Edit Freet">
+        <form id="delete-picture">
+          <h3>Delete Current Picture</h3>
+          <input type="submit" value="Delete Current Picture">
         </form>
 
-        <form id="delete-freet">
-          <h3>Delete Freet</h3>
+        <form id="view-pictures-previous">
+          <h3>View Previous Pictures</h3>
+          <input type="submit" value="View Previous Pictures">
+        </form>
+
+        <form id="create-picture-previous">
+          <h3>Create a Previous Picture</h3>
           <div>
-            <label for="id">ID:</label>
-            <input id="id" name="id">
+            <label for="picture">Picture:</label>
+            <input id="picture" name="picture">
           </div>
-          <input type="submit" value="Delete Freet">
+          <div>
+            <label for="pictureType">Picture Type:</label>
+            <input id="pictureType" name="pictureType">
+          </div>
+          <input type="submit" value="Create a Previous Picture">
+        </form>
+        
+        <form id="delete-picture-previous">
+          <h3>Delete a Previous Picture</h3>
+          <div>
+            <label for="rrpictureId">RRPicture ID:</label>
+            <input id="rrpictureId" name="rrpictureId">
+          </div>
+          <input type="submit" value="Delete a Previous Picture">
         </form>
 
         <form id="view-followers">
@@ -204,6 +223,51 @@
             <input id="member" name="member">
           </div>
           <input type="submit" value="Delete Group Member">
+        </form>
+
+        <form id="view-all-freets">
+          <h3>View All Freets</h3>
+          <input type="submit" value="View All Freets">
+        </form>
+
+        <form id="view-freets-by-author">
+          <h3>View Freets By Author</h3>
+          <div>
+            <label for="author">Author:</label>
+            <input id="author" name="author">
+          </div>
+          <input type="submit" value="View Freets By Author">
+        </form>
+
+        <form id="create-freet">
+          <h3>Create Freet</h3>
+          <div>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content"></textarea>
+          </div>
+          <input type="submit" value="Create Freet">
+        </form>
+
+        <form id="edit-freet">
+          <h3>Edit Freet</h3>
+          <div>
+            <label for="id">ID:</label>
+            <input id="id" name="id">
+          </div>
+          <div>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content"></textarea>
+          </div>
+          <input type="submit" value="Edit Freet">
+        </form>
+
+        <form id="delete-freet">
+          <h3>Delete Freet</h3>
+          <div>
+            <label for="id">ID:</label>
+            <input id="id" name="id">
+          </div>
+          <input type="submit" value="Delete Freet">
         </form>
       </div>
     </section>
