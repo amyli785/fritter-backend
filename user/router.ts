@@ -8,17 +8,101 @@ import * as util from './util';
 const router = express.Router();
 
 /**
- * Sign in user.
+ * Create a new user account
+ *
+ * @name POST /api/users
+ *
+ * @param {string} username - the user's username
+ * @param {string} password - the user's password
+ * @return {UserResponse} - an object with the created user's details (without password)
+ * @throws {403} - if there is a user already logged in
+ * @throws {409} - if `username` is already in use
+ * @throws {400} - if `username` or `password` is in the wrong format
+ *
+ */
+router.post(
+  '/',
+  [
+    userValidator.isUserLoggedOut,
+    userValidator.isValidUsername,
+    userValidator.isUsernameNotAlreadyInUse,
+    userValidator.isValidPassword
+  ],
+  async (req: Request, res: Response) => {
+    const user = await UserCollection.addOne(req.body.username, req.body.password);
+    req.session.userId = user._id.toString();
+    res.status(201).json({
+      message: `Your account was created successfully. You have been logged in as ${user.username}`,
+      user: util.constructUserResponse(user)
+    });
+  }
+);
+
+/**
+ * Update the user's profile
+ *
+ * @name PUT /api/users
+ *
+ * @param {string} username - the user's new username
+ * @param {string} password - the user's new password
+ * @return {UserResponse} - an object with the updated user details (without password)
+ * @throws {403} - if the user is not logged in
+ * @throws {409} - if the `username` is already in use
+ * @throws {400} - if `username` or `password` is in the wrong format
+ */
+router.put(
+  '/',
+  [
+    userValidator.isUserLoggedIn,
+    userValidator.isValidUsername,
+    userValidator.isUsernameNotAlreadyInUse,
+    userValidator.isValidPassword
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.updateOne(userId, req.body);
+    res.status(200).json({
+      message: 'Your profile was updated successfully.',
+      user: util.constructUserResponse(user)
+    });
+  }
+);
+
+/**
+ * Delete user
+ *
+ * @name DELETE /api/users
+ *
+ * @return {string} - a success message
+ * @throws {403} - if the user is not logged in
+ */
+router.delete(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    await UserCollection.deleteOne(userId);
+    await FreetCollection.deleteMany(userId);
+    req.session.userId = undefined;
+    res.status(200).json({
+      message: 'Your account has been deleted successfully.'
+    });
+  }
+);
+
+/**
+ * Sign in user
  *
  * @name POST /api/users/session
  *
- * @param {string} username - The user's username
- * @param {string} password - The user's password
- * @return {UserResponse} - An object with user's details
- * @throws {403} - If user is already signed in
- * @throws {400} - If username or password is  not in the correct format,
- *                 or missing in the req
- * @throws {401} - If the user login credentials are invalid
+ * @param {string} username - the user's username
+ * @param {string} password - the user's password
+ * @return {UserResponse} - an object with user's details (without password)
+ * @throws {403} - if the user is already signed in
+ * @throws {400} - if `username` or `password` is not in correct format or missing in the req
+ * @throws {401} - if the user login credentials are invalid
  *
  */
 router.post(
@@ -42,12 +126,12 @@ router.post(
 );
 
 /**
- * Sign out a user
+ * Sign out user
  *
  * @name DELETE /api/users/session
  *
- * @return - None
- * @throws {403} - If user is not logged in
+ * @return {string} - a success message
+ * @throws {403} - if the user is not logged in
  *
  */
 router.delete(
@@ -59,91 +143,6 @@ router.delete(
     req.session.userId = undefined;
     res.status(200).json({
       message: 'You have been logged out successfully.'
-    });
-  }
-);
-
-/**
- * Create a user account.
- *
- * @name POST /api/users
- *
- * @param {string} username - username of user
- * @param {string} password - user's password
- * @return {UserResponse} - The created user
- * @throws {403} - If there is a user already logged in
- * @throws {409} - If username is already taken
- * @throws {400} - If password or username is not in correct format
- *
- */
-router.post(
-  '/',
-  [
-    userValidator.isUserLoggedOut,
-    userValidator.isValidUsername,
-    userValidator.isUsernameNotAlreadyInUse,
-    userValidator.isValidPassword
-  ],
-  async (req: Request, res: Response) => {
-    const user = await UserCollection.addOne(req.body.username, req.body.password);
-    req.session.userId = user._id.toString();
-    res.status(201).json({
-      message: `Your account was created successfully. You have been logged in as ${user.username}`,
-      user: util.constructUserResponse(user)
-    });
-  }
-);
-
-/**
- * Update a user's profile.
- *
- * @name PUT /api/users
- *
- * @param {string} username - The user's new username
- * @param {string} password - The user's new password
- * @return {UserResponse} - The updated user
- * @throws {403} - If user is not logged in
- * @throws {409} - If username already taken
- * @throws {400} - If username or password are not of the correct format
- */
-router.put(
-  '/',
-  [
-    userValidator.isUserLoggedIn,
-    userValidator.isValidUsername,
-    userValidator.isUsernameNotAlreadyInUse,
-    userValidator.isValidPassword
-  ],
-  async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    const user = await UserCollection.updateOne(userId, req.body);
-    res.status(200).json({
-      message: 'Your profile was updated successfully.',
-      user: util.constructUserResponse(user)
-    });
-  }
-);
-
-/**
- * Delete a user.
- *
- * @name DELETE /api/users
- *
- * @return {string} - A success message
- * @throws {403} - If the user is not logged in
- */
-router.delete(
-  '/',
-  [
-    userValidator.isUserLoggedIn
-  ],
-  async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    await UserCollection.deleteOne(userId);
-    await FreetCollection.deleteMany(userId);
-    req.session.userId = undefined;
-    res.status(200).json({
-      message: 'Your account has been deleted successfully.'
     });
   }
 );

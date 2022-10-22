@@ -60,8 +60,8 @@ router.get(
  * @param {string} pictureType - the type of the picture, one of: "RawString", "Path", "Link"
  * @param {boolean} maintainPrevious - whether to store the current profile picture in the list of maintained previous profile pictures (ignored if the current profile picture is `None`); defaults to `false`
  * @return {RRPictureResponse} - an object with the details of the new profile picture
- * @throws {400} - if `picture` or `pictureType` is missing in the req or `pictureType` is an invalid value
  * @throws {403} - if the user is not logged in
+ * @throws {400} - if `picture` or `pictureType` is missing in the req or `pictureType` is an invalid value
  */
 router.post(
 	'/current',
@@ -144,8 +144,8 @@ router.get(
  * @param {string} picture - the desired picture (raw, a path, or a link) represented as a string
  * @param {string} pictureType - the type of the picture, one of: "RawString", "Path", "Link"
  * @return {RRPictureResponse[]} - a list of objects with the details of the user's updated maintained previous profile pictures
- * @throws {400} - if `picture` or `pictureType` is in the wrong format or missing in the req
  * @throws {403} - if the user is not logged in
+ * @throws {400} - if `picture` or `pictureType` is in the wrong format or missing in the req
  */
 router.post(
 	'/previous',
@@ -175,7 +175,7 @@ router.post(
  * 
  * @return {RRPictureResponse[]} - a list of objects with the details of the user's updated maintained previous profile pictures
  * @throws {403} - if the user is not logged in
- * @throws {404} - if `rrpictureId` cannot be found for the user
+ * @throws {404} - if `rrpictureId` cannot be found or is not associated with the user
  */
 router.delete(
 	'/previous/:rrpictureId?',

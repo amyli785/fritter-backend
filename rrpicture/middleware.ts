@@ -50,7 +50,8 @@ const hasCurrentPicture = async (req: Request, res: Response, next: NextFunction
  * Checks if rrpictureId in req.params exists as a picture associated with the user
  */
 const isUsersPicture = async (req: Request, res: Response, next: NextFunction) => {
-	const rrpicture = await RRPictureCollection.findOneByIdAndUser(req.params.rrpictureId, req.session.userId);
+	const validFormat = Types.ObjectId.isValid(req.params.rrpictureId);
+	const rrpicture = validFormat ? await RRPictureCollection.findOneByIdAndUser(req.params.rrpictureId, req.session.userId) : undefined;
 	if (!rrpicture) {
 		res.status(404).json({
 			error: `RRPicture with id ${req.params.rrpictureId} does not exist for the user.`,

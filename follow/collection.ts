@@ -42,6 +42,9 @@ class FollowCollection{
    */
   static async findOne(followerId: Types.ObjectId | string, followeeId: Types.ObjectId | string): Promise<HydratedDocument<Follow>> {
 		const follow = await FollowModel.findOne({followerId: followerId, followeeId: followeeId});
+		if (!follow) {
+			return follow;
+		}
 		await follow.populate('followerId');
 		await follow.populate('followeeId');
     return follow;

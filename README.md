@@ -182,38 +182,38 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- An object with the created user's details (without password)
+- a success message
+- an object with the created user's details (without password)
 
 **Throws**
 
-- `400` if `username` or `password` is in the wrong format
 - `403` if there is a user already logged in
 - `409` if `username` is already in use
+- `400` if `username` or `password` is in the wrong format
 
 #### `PUT /api/users` - Update the user's profile
 
 **Body** _(no need to add fields that are not being changed)_
 
-- `displayName` _{string}_ - the user's new display name
+- `username` _{string}_ - the user's new username
 - `password` _{string}_ - the user's new password
 
 **Returns**
 
-- A success message
-- An object with the updated user details (without password)
+- a success message
+- an object with the updated user details (without password)
 
 **Throws**
 
-- `400` if `username` or `password` is in the wrong format
 - `403` if the user is not logged in
 - `409` if the `username` is already in use
+- `400` if `username` or `password` is in the wrong format
 
 #### `DELETE /api/users` - Delete user
 
 **Returns**
 
-- A success message
+- a success message
 
 **Throws**
 
@@ -223,25 +223,25 @@ The following api routes will be implemented:
 
 **Body**
 
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
+- `username` _{string}_ - the user's username
+- `password` _{string}_ - the user's password
 
 **Returns**
 
-- A success message
-- An object with user's details (without password)
+- a success message
+- an object with user's details (without password)
 
 **Throws**
 
+- `403` if the user is already logged in
 - `400` if `username` or `password` is not in correct format or missing in the req
 - `401` if the user login credentials are invalid
-- `403` if the user is already logged in
 
 #### `DELETE /api/users/session` - Sign out user
 
 **Returns**
 
-- A success message
+- a success message
 
 **Throws**
 
@@ -251,7 +251,7 @@ The following api routes will be implemented:
 
 **Returns**
 
-- The user's current profile picture, if any
+- the user's current profile picture, if any
 
 **Throws**
 
@@ -261,7 +261,7 @@ The following api routes will be implemented:
 
 **Returns**
 
-- The current profile picture of `username`, if any
+- the current profile picture of `username`, if any
 
 **Throws**
 
@@ -277,19 +277,19 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- An object with the details of the new profile picture
+- a success message
+- an object with the details of the new profile picture
 
 **Throws**
 
-- `400` if `picture` or `pictureType` is missing in the req or `pictureType` is an invalid value
 - `403` if the user is not logged in
+- `400` if `picture` or `pictureType` is missing in the req or `pictureType` is an invalid value
 
 #### `DELETE /api/rrpictures/current` - Delete the current profile picture of the user
 
 **Returns**
 
-- A success message
+- a success message
 
 **Throws**
 
@@ -300,7 +300,7 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A list of objects with the details of the user's maintained previous profile pictures
+- a list of objects with the details of the user's maintained previous profile pictures
 
 **Throws**
 
@@ -315,31 +315,31 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- A list of objects with the details of the user's updated maintained previous profile pictures
+- a success message
+- a list of objects with the details of the user's updated maintained previous profile pictures
 
 **Throws**
 
-- `400` if `picture` or `pictureType` is in the wrong format or missing in the req
 - `403` if the user is not logged in
+- `400` if `picture` or `pictureType` is in the wrong format or missing in the req
 
 #### `DELETE /api/rrpictures/previous/:rrpictureId` - Remove the picture from the user's list of maintained previous profile pictures
 
 **Returns**
 
-- A success message
-- A list of objects with the details of the user's updated maintained previous profile pictures
+- a success message
+- a list of objects with the details of the user's updated maintained previous profile pictures
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if `rrpictureId` cannot be found for the user
+- `404` if `rrpictureId` cannot be found or is not associated with the user
 
 #### `GET /api/follow/followers` - View the list of who the user's followers are
 
 **Returns**
 
-- The list of followers
+- an array of objects with the details of the user's followers
 
 **Throws**
 
@@ -349,13 +349,13 @@ The following api routes will be implemented:
 
 **Returns**
 
-- The list that the user follows
+- an array of objects with the details of the user's following/followees
 
 **Throws**
 
 - `403` if the user is not logged in
 
-#### `POST /api/follow` - Let the user follow another user
+#### `POST /api/follow` - Create a new follow (follow)
 
 **Body**
 
@@ -363,21 +363,22 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- The new follow object
+- a success message
+- an array of objects with the updated details of the user's following/followees
 
 **Throws**
 
-- `400` if the `followee` is empty
 - `403` if the user is not logged in
+- `400` if the `followee` is empty
 - `404` if the `followee` cannot be found
 - `409` if the user is already following `followee` or the user is `followee`
 
-#### `DELETE /api/follow/:followee` - Let the user unfollow another user
+#### `DELETE /api/follow/:followee` - Delete the follow (unfollow)
 
 **Returns**
 
-- A success message
+- a success message
+- an array of objects with the updated details of the user's following/followees
 
 **Throws**
 
@@ -389,7 +390,7 @@ The following api routes will be implemented:
 
 **Returns**
 
-- The user's list of group objects, including the group members
+- an array of objects with details of the user's view groups, including the group members
 
 **Throws**
 
@@ -403,20 +404,20 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- The new group object
+- a success message
+- an object with the details of the new group, excluding the members
 
 **Throws**
 
-- `400` if `name` is not in correct format or missing in the req
 - `403` if the user is not logged in
+- `400` if `name` is not in correct format or missing in the req
 - `409` if the user already has a group named `name`
 
 #### `GET /api/groups/:name` - Get the details of the view group
 
 **Returns**
 
-- The group object, including the list of group members.
+- an object with the details of the group, including the group members
 
 **Throws**
 
@@ -427,7 +428,7 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
+- a success message
 
 **Throws**
 
@@ -442,28 +443,28 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- The updated group object, including the updated list of group members
+- a success message
+- an object with the details of the updated group, including the group members
 
 **Throws**
 
-- `400` if `member` is missing in the req
 - `403` if the user is not logged in
 - `404` if the group `name` cannot be found for the user or `member` cannot be found
+- `400` if `member` is missing in the req
 - `409` if the group `name` already contains `member` or `member` is the user
 
 #### `DELETE /api/groups/:name/:member` - Delete the member from the view group
 
 **Returns**
 
-- A success message
-- The updated group object, including the updated list of group members
+- a success message
+- an object with the details of the updated group, including the group members
 
 **Throws**
 
-- `400` if `member` is missing in the req
 - `403` if the user is not logged in
 - `404` if the group `name` cannot be found for the user or `member` cannot be found
+- `400` if `member` is missing in the req
 - `409` if the group `name` did not contain `member` or `member` is the user
 
 #### `GET /api/freets/:freetId` - View the freet

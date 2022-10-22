@@ -14,7 +14,7 @@ const router = express.Router();
  * 
  * @name GET /api/groups
  * 
- * @return {GroupWithMembersResponse[]} - The user's list of group objects, including the group members
+ * @return {GroupWithMembersResponse[]} - an array of objects with details of the user's view groups, including the group members
  * @throws {403} - if the user is not logged in
  */
 router.get(
@@ -38,10 +38,10 @@ router.get(
  * @name POST /api/groups
  * 
  * @param {string} name - a name for the group
- * @return {GroupResonse} - the new group object
+ * @return {GroupResonse} - an object with the details of the new group, excluding the members
  * @throws {403} - if the user is not logged in
- * @throws {400} - if name is not in correct format or missing in the req
- * @throws {409} - if the user already has a group named name
+ * @throws {400} - if `name` is not in correct format or missing in the req
+ * @throws {409} - if the user already has a group named `name`
  */
 router.post(
 	'/',
@@ -66,9 +66,9 @@ router.post(
  * 
  * @name GET /api/groups/:name
  * 
- * @return {GroupWithMembersResponse} - the group object, including the list of group members
+ * @return {GroupWithMembersResponse} - an object with the details of the group, including the group members
  * @throws {403} - if the user is not logged in
- * @throws {404} - if the group name cannot be found or does not "view" the user
+ * @throws {404} - if the group `name` cannot be found or does not "view" the user
  */
 router.get(
 	'/:name?',
@@ -93,7 +93,7 @@ router.get(
  * 
  * @return {string} - a success message
  * @throws {403} - if the user is not logged in
- * @throws {404} - if the group name cannot be found or does not "view" the user
+ * @throws {404} - if the group `name` cannot be found or does not "view" the user
  */
 router.delete(
 	'/:name?',
@@ -117,11 +117,11 @@ router.delete(
  * @name POST /api/groups/:name
  * 
  * @param {string} member - the username of the member to add to the group
- * @return {GroupWithMembersResponse} - the updated group object, including the updated list of group members
+ * @return {GroupWithMembersResponse} - an object with the details of the updated group, including the group members
  * @throws {403} - if the user is not logged in
- * @throws {404} - if the group name cannot be found for the user or member cannot be found
- * @throws {400} - if member is missing in the req
- * @throws {409} - if the group name already contains member or member is the user
+ * @throws {404} - if the group `name` cannot be found for the user or `member` cannot be found
+ * @throws {400} - if `member` is missing in the req
+ * @throws {409} - if the group `name` already contains `member` or `member` is the user
  */
 router.post(
 	'/:name?',
@@ -151,6 +151,7 @@ router.post(
 		const members = await GroupMemberCollection.findAllByGroup(group._id);
 
 		res.status(200).json({
+			message: 'The group member was successfully created.',
 			group: util.constructGroupWithMembersResponse(groupUpdated, members),
 		});
 	},
@@ -161,11 +162,11 @@ router.post(
  * 
  * @name DELETE /api/groups/:name/:member
  * 
- * @param {GroupWithMembersResponse} - the updated group object, including the updated list of group members
- * @throws {400} - if member is missing in the req
+ * @param {GroupWithMembersResponse} - an object with the details of the updated group, including the group members
  * @throws {403} - if the user is not logged in
- * @throws {404} - if the group name cannot be found for the user or member cannot be found
- * @throws {409} - if the group name did not contain member or member is the user
+ * @throws {404} - if the group `name` cannot be found for the user or `member` cannot be found
+ * @throws {400} - if `member` is missing in the req
+ * @throws {409} - if the group `name` did not contain `member` or `member` is the user
  */
 router.delete(
 	'/:name?/:member?',
@@ -191,6 +192,7 @@ router.delete(
 		const members = await GroupMemberCollection.findAllByGroup(group._id);
 
 		res.status(200).json({
+			message: 'The group member was successfully deleted.',
 			group: util.constructGroupWithMembersResponse(groupUpdated, members),
 		});
 	},

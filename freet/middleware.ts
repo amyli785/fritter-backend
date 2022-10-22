@@ -1,9 +1,9 @@
 import type {Request, Response, NextFunction} from 'express';
 import {Types} from 'mongoose';
-import FreetCollection from '../freet/collection';
+import FreetCollection from './collection';
 
 /**
- * Checks if a freet with freetId is req.params exists
+ * Checks if a freet with freetId in req.params exists
  */
 const isFreetExists = async (req: Request, res: Response, next: NextFunction) => {
   const validFormat = Types.ObjectId.isValid(req.params.freetId);

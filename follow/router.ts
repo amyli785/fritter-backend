@@ -9,11 +9,11 @@ import * as util from './util';
 const router = express.Router();
 
 /**
- * View followers
+ * View the list of who the user's followers are
  * 
  * @name GET /api/follow/followers
  * 
- * @return {FollowResponse[]} - An array of follows where the user is followed.
+ * @return {FollowUserResponse[]} - an array of objects with the details of the user's followers
  * @throws {403} - if the user is not logged in
  */
 router.get(
@@ -29,11 +29,11 @@ router.get(
 )
 
 /**
- * View following
+ * View the list of who the user is following
  * 
  * @name GET /api/follow/following
  * 
- * @return {FollowResponse[]} - An array of follows where the user follows.
+ * @return {FollowUserResponse[]} - an array of objects with the details of the user's following/followees
  * @throws {403} - if the user is not logged in
  */
  router.get(
@@ -49,12 +49,12 @@ router.get(
 )
 
 /**
- * Create a new follow.
+ * Create a new follow (follow)
  * 
  * @name POST /api/follow
  * 
  * @param {string} followee - the user to follow
- * @return {FollowResponse} - the created follow
+ * @return {FollowUserResponse[]} - an array of objects with the updated details of the user's following/followees
  * @throws {403} - if the user is not logged in
  * @throws {400} - if `followee` is empty
  * @throws {404} - if `followee` cannot be found
@@ -70,21 +70,21 @@ router.post(
 	async (req: Request, res: Response) => {
 		const followee = await UserCollection.findOneByUsername(req.body.followee as string);
 		const follow = await FollowCollection.addOne(req.session.userId, followee._id);
+		const followees = await FollowCollection.findAllFollowees(req.session.userId);
 
 		res.status(201).json({
 		  message: 'Your follow was created successfully.',
-		  follow: util.constructFollowResponse(follow),
+		  followees: followees.map(util.constructFollowee),
 		});
 	}
 )
 
 /**
- * Delete a follow.
+ * Delete the follow (unfollow)
  * 
  * @name POST /api/follow/:followee
  * 
- * @param {string} followee - the user to follow
- * @return {string} - A success message
+ * @return {FollowUserResponse[]} - an array of objects with the updated details of the user's following/followees
  * @throws {403} - if the user is not logged in
  * @throws {404} - if `followee` cannot be found
  * @throws {409} - if the user was not following `followee` or the user is `followee`
@@ -99,8 +99,10 @@ router.delete(
 	async (req: Request, res: Response) => {
 		const followee = await UserCollection.findOneByUsername(req.params.followee as string);
 		await FollowCollection.deleteOne(req.session.userId, followee._id);
+		const followees = await FollowCollection.findAllFollowees(req.session.userId);
 		res.status(200).json({
-		  message: 'Your follow was deleted successfully.'
+		  message: 'Your follow was deleted successfully.',
+		  followees: followees.map(util.constructFollowee),
 		});
 	}
 )
