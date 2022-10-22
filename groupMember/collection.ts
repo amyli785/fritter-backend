@@ -30,13 +30,7 @@ class GroupMemberCollection {
 	 * @returns {Promise<HydratedDocument<GroupMember>> | Promise<null> } - the group member with the given groupId and memberId, if any
 	 */
 	static async findOne(groupId: Types.ObjectId | string, memberId: Types.ObjectId | string): Promise<HydratedDocument<GroupMember> | null> {
-		const groupMember = await GroupMemberModel.findOne({groupId: groupId, memberId: memberId});
-		if (groupMember === null) {
-			return null;
-		}
-		await groupMember.populate('groupId');
-		await groupMember.populate('memberId');
-		return groupMember;
+		return GroupMemberModel.findOne({groupId: groupId, memberId: memberId}).populate(['groupId', 'memberId']);
 	}
 
 	/**
