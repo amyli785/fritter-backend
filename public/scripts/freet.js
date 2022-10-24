@@ -11,26 +11,20 @@ function viewAllFreets(fields) {
     .catch(showResponse);
 }
 
-function viewFreetsByAuthor(fields) {
-  fetch(`/api/freets?author=${fields.author}`)
+function viewFreets(fields) {
+  fetch(`/api/freets?freetIds=${fields.freetIds}`)
+    .then(showResponse)
+    .catch(showResponse);
+}
+
+function viewFreet(fields) {
+  fetch(`/api/freets/${fields.freetId}`)
     .then(showResponse)
     .catch(showResponse);
 }
 
 function createFreet(fields) {
   fetch('/api/freets', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function editFreet(fields) {
-  fetch(`/api/freets/${fields.id}`, {method: 'PUT', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
-    .then(showResponse)
-    .catch(showResponse);
-}
-
-function deleteFreet(fields) {
-  fetch(`/api/freets/${fields.id}`, {method: 'DELETE'})
     .then(showResponse)
     .catch(showResponse);
 }

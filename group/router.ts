@@ -52,7 +52,6 @@ router.post(
 	],
 	async (req: Request, res: Response) => {
 		const group = await GroupCollection.addOne(req.session.userId as string, req.body.name);
-		const groupMember = await GroupMemberCollection.addOne(group._id, req.session.userId);
 
 		res.status(201).json({
 			message: 'Your group was created successfully.',

@@ -230,13 +230,22 @@
           <input type="submit" value="View All Freets">
         </form>
 
-        <form id="view-freets-by-author">
-          <h3>View Freets By Author</h3>
+        <form id="view-freets">
+          <h3>View Freets</h3>
           <div>
-            <label for="author">Author:</label>
-            <input id="author" name="author">
+            <label for="freetIds">Freet IDs (comma separated):</label>
+            <input id="freetIds" name="freetIds">
           </div>
-          <input type="submit" value="View Freets By Author">
+          <input type="submit" value="View Freets">
+        </form>
+
+        <form id="view-freet">
+          <h3>View Freet</h3>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <input type="submit" value="View Freet">
         </form>
 
         <form id="create-freet">
@@ -245,29 +254,15 @@
             <label for="content">Content:</label>
             <textarea id="content" name="content"></textarea>
           </div>
+          <div>
+            <label for="audience">Audience (comma separated Group IDs):</label>
+            <textarea id="audience" name="audience"></textarea>
+          </div>
+          <div>
+            <label for="responseTo">Response To (Freet ID):</label>
+            <textarea id="responseTo" name="responseTo"></textarea>
+          </div>
           <input type="submit" value="Create Freet">
-        </form>
-
-        <form id="edit-freet">
-          <h3>Edit Freet</h3>
-          <div>
-            <label for="id">ID:</label>
-            <input id="id" name="id">
-          </div>
-          <div>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content"></textarea>
-          </div>
-          <input type="submit" value="Edit Freet">
-        </form>
-
-        <form id="delete-freet">
-          <h3>Delete Freet</h3>
-          <div>
-            <label for="id">ID:</label>
-            <input id="id" name="id">
-          </div>
-          <input type="submit" value="Delete Freet">
         </form>
       </div>
     </section>

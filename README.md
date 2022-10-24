@@ -467,63 +467,66 @@ The following api routes will be implemented:
 - `400` if `member` is missing in the req
 - `409` if the group `name` did not contain `member` or `member` is the user
 
+#### `GET /api/freets` - Get all the freets
+
+**Returns**
+
+- an array of objects with the details of all freets sorted in descending order by date modified
+
+#### `GET /api/freets?freetIds=id1,id2,...` - Get freets by freetIds
+
+**Returns**
+
+- an array of objects with the details of freets with the given `freetIds` in descending order by date modified
+
+**Throws**
+
+- `400` if `freetIds` is not given or is in the wrong format
+- `404` if for a freetId in `freetIds`, the freet cannot be found or the user is not a member of the audience
+
 #### `GET /api/freets/:freetId` - View the freet
 
 **Returns**
 
-- The freet object
+- an object with the details of the freet
 
 **Throws**
 
+- `400` if `freetId` is in the wrong format
 - `404` if `freetId` cannot be found or the user is not a member of the audience of the freet
 
 #### `POST /api/freets` - Create a new freet
 
 **Body**
 
-- `content` _{string}_ - The content of the freet
-- `response-to` _{freetId, None}_ - The freet to which the current freet responds
-- `audience` _{group, None}_ - The audience to which the freet is addressed (and would see the freet)
+- `content` _{string}_ - the content of the freet
+- `audience` _{string[]}_ - the groups making up the audience who can see the freet
+- `responseTo` _{string | None}_ - the freet to which the current freet responds, if any
 
 **Returns**
 
-- A success message
-- The new freet object
+- a success message
+- an object with the details of the new freet
 
 **Throws**
 
-- `400` if the `content`, `response-to`, or `audience` is not in the correct format
 - `403` if the user is not logged in
-- `404` if the `response-to` or any of the `audience` cannot be found
+- `400` if the `content`, `audience`, or `responseTo` is in the wrong format
+- `404` if the `responseTo` cannot be found that the user can view or any of the groups in `audience` cannot be found for the user
 
-<!-- #### `GET /api/freets` - Get all the freets
-
-**Returns**
-
-- An array of all freets sorted in descending order by date modified
-
-#### `GET /api/freets?freeter=USERNAME` - Get freets by freeter
-
-**Returns**
-
-- An array of freets created by user with username `freeter`
-
-**Throws**
-
-- `400` if `freeter` is not given
-- `404` if `freeter` is not a recognized username of any user
+<!--
 
 #### `DELETE /api/freets/:freetId?` - Delete an existing freet
 
 **Returns**
 
-- A success message
+- a success message
 
 **Throws**
 
 - `403` if the user is not logged in
 - `403` if the user is not the author of the freet
-- `404` if the freetId is invalid
+- `404` if the `freetId` is invalid
 
 #### `PUT /api/freets/:freetId?` - Update an existing freet
 
@@ -533,16 +536,18 @@ The following api routes will be implemented:
 
 **Returns**
 
-- A success message
-- An object with the updated freet
+- a success message
+- an object with the details of the updated freet
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the freetId is invalid
+- `404` if the `freetId` is invalid
 - `403` if the user is not the author of the freet
-- `400` if the new freet content is empty or a stream of empty spaces
-- `413` if the new freet content is more than 140 characters long -->
+- `400` if the new freet `content` is empty or a stream of empty spaces
+- `413` if the new freet `content` is more than 140 characters long
+
+-->
 
 #### `GET /api/filter?expression=EXPRESSION` - Get the freets that match the filter expression
 

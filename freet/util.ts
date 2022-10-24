@@ -1,14 +1,32 @@
-import type {HydratedDocument} from 'mongoose';
+import type {HydratedDocument, StringSchemaDefinition} from 'mongoose';
 import moment from 'moment';
 import type {Freet, PopulatedFreet} from '../freet/model';
 
 // Update this if you add a property to the Freet type!
 type FreetResponse = {
   _id: string;
+  authorId: string;
   author: string;
   dateCreated: string;
-  content: string;
   dateModified: string;
+  content: string;
+  audience: string[];
+  responseThreadId: string;
+  responses: string[];
+  responseTo: string;
+};
+
+type FreetResponseThread = {
+  _id: string;
+  authorId: string;
+  author: string;
+  dateCreated: string;
+  dateModified: string;
+  content: string;
+  audience: string[];
+  responseThreadId: string;
+  responses: FreetResponseThread[];
+  responseTo: string;
 };
 
 /**
@@ -32,14 +50,17 @@ const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse =
       versionKey: false // Cosmetics; prevents returning of __v property
     })
   };
-  const {username} = freetCopy.authorId;
-  delete freetCopy.authorId;
   return {
-    ...freetCopy,
     _id: freetCopy._id.toString(),
-    author: username,
-    dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified)
+    authorId: freetCopy.authorId._id.toString(),
+    author: freetCopy.authorId.username,
+    dateCreated: formatDate(freetCopy.dateCreated),
+    dateModified: formatDate(freetCopy.dateModified),
+    content: freetCopy.content,
+    audience: freetCopy.audience.map((group) => group._id.toString()),
+    responseThreadId: freetCopy.responseThreadId._id.toString(),
+    responses: freetCopy.responses.map(response => response._id.toString()),
+    responseTo: freetCopy.responseTo ? freetCopy.responseTo._id.toString() : '',
   };
 };
 

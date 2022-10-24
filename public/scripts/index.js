@@ -52,10 +52,9 @@ const formsAndHandlers = {
   'add-group-member': addGroupMember,
   'delete-group-member': deleteGroupMember,
   'view-all-freets': viewAllFreets,
-  'view-freets-by-author': viewFreetsByAuthor,
+  'view-freets': viewFreets,
+  'view-freet': viewFreet,
   'create-freet': createFreet,
-  'edit-freet': editFreet,
-  'delete-freet': deleteFreet,
 };
 
 // Attach handlers to forms
