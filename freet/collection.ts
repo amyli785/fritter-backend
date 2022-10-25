@@ -94,25 +94,21 @@ class FreetCollection {
   }
 
   /**
-   * Update a freet with the new content
+   * Get all the freets by given author
    *
-   * @param {string} freetId - The id of the freet to be updated
-   * @param {string} content - The new content of the freet
-   * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
+   * @param {string} userId - The userId of author of the freets
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
-  static async updateOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
-    const freet = await FreetModel.findOne({_id: freetId});
-    freet.content = content;
-    freet.dateModified = new Date();
-    await freet.save();
-    return freet.populate(['authorId', 'audience', 'responses', 'responseTo']);
+  static async findAllByUserId(userId: Types.ObjectId | string): Promise<Array<HydratedDocument<Freet>>> {
+    const freets = await FreetModel.find({authorId: userId}).sort({dateModified: -1});
+    return Promise.all(freets.map(async (freet) => freet.populate(['authorId', 'audience', 'responses', 'responseTo'])));
   }
 
   /**
    * Update a freet with an additional response
    *
    * @param {string} freetId - The id of the freet to be updated
-   * @param {string} content - The new content of the freet
+   * @param {string} responseId - The new response to the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
    */
   static async updateOneResponse(freetId: Types.ObjectId | string, responseId: Types.ObjectId): Promise<HydratedDocument<Freet>> {

@@ -1,6 +1,6 @@
 import type {Request, Response, NextFunction} from 'express';
-import GroupMemberCollection from 'groupMember/collection';
 import {Types} from 'mongoose';
+import GroupMemberCollection from 'groupMember/collection';
 import UserCollection from '../user/collection';
 import GroupCollection from './collection';
 

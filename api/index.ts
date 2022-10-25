@@ -14,6 +14,7 @@ import {rrpictureRouter} from '../rrpicture/router';
 import {followRouter} from '../follow/router';
 import {groupRouter} from '../group/router';
 import {freetRouter} from '../freet/router';
+import {filterRouter} from '../filter/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -82,6 +83,7 @@ app.use('/api/rrpictures', rrpictureRouter);
 app.use('/api/follow', followRouter);
 app.use('/api/groups', groupRouter);
 app.use('/api/freets', freetRouter);
+app.use('/api/filters', filterRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

@@ -55,6 +55,11 @@ const formsAndHandlers = {
   'view-freets': viewFreets,
   'view-freet': viewFreet,
   'create-freet': createFreet,
+  'view-filters': viewFilters,
+  'view-filter': viewFilter,
+  'create-filter': createFilter,
+  'update-filter': updateFilter,
+  'delete-filter': deleteFilter,
 };
 
 // Attach handlers to forms

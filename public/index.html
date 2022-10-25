@@ -10,6 +10,7 @@
   <script src="/scripts/follow.js"></script>
   <script src="/scripts/group.js"></script>
   <script src="/scripts/freet.js"></script>
+  <script src="/scripts/filter.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -263,6 +264,59 @@
             <textarea id="responseTo" name="responseTo"></textarea>
           </div>
           <input type="submit" value="Create Freet">
+        </form>
+
+        <form id="view-filters">
+          <h3>View Filters</h3>
+          <input type="submit" value="View Filters">
+        </form>
+
+        <form id="view-filter">
+          <h3>View Filter</h3>
+          <div>
+            <label for="filterId">Filter ID:</label>
+            <input id="filterId" name="filterId">
+          </div>
+          <input type="submit" value="View Filter">
+        </form>
+
+        <form id="create-filter">
+          <h3>Create Filter</h3>
+          <div>
+            <label for="expression">Expression:</label>
+            <input id="expression" name="expression">
+          </div>
+          <div>
+            <label for="name">Name:</label>
+            <input id="name" name="name">
+          </div>
+          <input type="submit" value="Create Filter">
+        </form>
+
+        <form id="update-filter">
+          <h3>Update Filter</h3>
+          <div>
+            <label for="filterId">Filter ID:</label>
+            <input id="filterId" name="filterId">
+          </div>
+          <div>
+            <label for="expression">Expression:</label>
+            <input id="expression" name="expression">
+          </div>
+          <div>
+            <label for="name">Name:</label>
+            <input id="name" name="name">
+          </div>
+          <input type="submit" value="Update Filter">
+        </form>
+
+        <form id="delete-filter">
+          <h3>Delete Filter</h3>
+          <div>
+            <label for="filterId">Filter ID:</label>
+            <input id="filterId" name="filterId">
+          </div>
+          <input type="submit" value="Delete Filter">
         </form>
       </div>
     </section>

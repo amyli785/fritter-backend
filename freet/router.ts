@@ -1,5 +1,6 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
+import TagCollection from '../tag/collection';
 import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
@@ -96,8 +97,16 @@ router.post(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const content = req.body.content as string;
     const audience = req.body.audience ? req.body.audience.toString().split(',') : new Array<string>();
-    const freet = await FreetCollection.addOne(userId, req.body.content as string, audience, req.body.responseTo as string);
+    const freet = await FreetCollection.addOne(userId, content, audience, req.body.responseTo as string);
+
+    const tagLabelRexex = /(^|\s+)#(\w+)/g;
+    const contentTagLabels = [...content.matchAll(tagLabelRexex)];
+    await Promise.all(contentTagLabels.map(async (match: RegExpMatchArray) => {
+      const label: string = match[2];
+      return TagCollection.updateOrAddOne(label, [freet._id]);
+    }));
 
     res.status(201).json({
       message: 'Your freet was created successfully.',

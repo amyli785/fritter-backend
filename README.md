@@ -549,7 +549,76 @@ The following api routes will be implemented:
 
 -->
 
-#### `GET /api/filter?expression=EXPRESSION` - Get the freets that match the filter expression
+#### `GET /api/filters` - View the user's filters
+
+**Returns**
+
+- an array of objects with the details of the filter
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/filters/:filterId` - View the filter
+
+**Returns**
+
+- an object with the details of the filter
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if `filterId` is in the wrong format
+- `404` if `filterId` cannot be found or is not associated with the user
+
+#### `POST /api/filters` - Create a new filter
+
+**Body**
+
+- `expression` _{string}_ - the boolean-like expression of the filter
+- `name` _{string}_ - a name for the filter
+
+**Returns**
+
+- a success message
+- an object with the details of the new filter
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if the `expression` or `name` is in the wrong format
+
+#### `PUT /api/filters/:filterId?` - Update an existing filter
+
+**Body**
+
+- `expression` _{string}_ - the new boolean-like expression of the filter
+- `name` _{string}_ - the new name for the filter
+
+**Returns**
+
+- a success message
+- an object with the details of the updated filter
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if `filterId`, `expression`, or `name` is in the wrong format
+- `404` if `filterId` cannot be found or is not associated with the user
+
+#### `DELETE /api/filters/:filterId` - Delete a filter
+
+**Returns**
+
+- a success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if `filterId` is in the wrong format
+- `404` if `filterId` cannot be found or is not associated with the user
+
+<!-- #### `GET /api/filter?expression=EXPRESSION` - Get the freets that match the filter expression
 
 **Returns**
 
@@ -557,7 +626,7 @@ The following api routes will be implemented:
 
 **Throws**
 
-- `404` if the `expression` is invalid
+- `404` if the `expression` is invalid -->
 
 #### `GET /api/feed` - Get the list of tabs for the user
 

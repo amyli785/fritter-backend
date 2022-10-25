@@ -14,9 +14,9 @@ class UserCollection {
   /**
    * Add a new user
    *
-   * @param {string} username - The username of the user
-   * @param {string} password - The password of the user
-   * @return {Promise<HydratedDocument<User>>} - The newly created user
+   * @param {string} username - the username of the user
+   * @param {string} password - the password of the user
+   * @return {Promise<HydratedDocument<User>>} - the newly created user
    */
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const dateJoined = new Date();
@@ -27,20 +27,20 @@ class UserCollection {
   }
 
   /**
-   * Find a user by userId.
+   * Find a user by userId
    *
-   * @param {string} userId - The userId of the user to find
-   * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
+   * @param {string} userId - the userId of the user to find
+   * @return {Promise<HydratedDocument<User>> | Promise<null>} - the user with the given userId, if any
    */
   static async findOneByUserId(userId: Types.ObjectId | string): Promise<HydratedDocument<User>> {
     return UserModel.findOne({_id: userId});
   }
 
   /**
-   * Find a user by username (case insensitive).
+   * Find a user by username (case insensitive)
    *
-   * @param {string} username - The username of the user to find
-   * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
+   * @param {string} username - the username of the user to find
+   * @return {Promise<HydratedDocument<User>> | Promise<null>} - the user with the given username, if any
    */
   static async findOneByUsername(username: string): Promise<HydratedDocument<User>> {
     return UserModel.findOne({username: new RegExp(`^${username.trim()}$`, 'i')});
@@ -49,9 +49,9 @@ class UserCollection {
   /**
    * Find a user by username (case insensitive).
    *
-   * @param {string} username - The username of the user to find
-   * @param {string} password - The password of the user to find
-   * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
+   * @param {string} username - the username of the user to find
+   * @param {string} password - the password of the user to find
+   * @return {Promise<HydratedDocument<User>> | Promise<null>} - the user with the given username, if any
    */
   static async findOneByUsernameAndPassword(username: string, password: string): Promise<HydratedDocument<User>> {
     return UserModel.findOne({
@@ -63,9 +63,9 @@ class UserCollection {
   /**
    * Update user's information
    *
-   * @param {string} userId - The userId of the user to update
-   * @param {Object} userDetails - An object with the user's updated credentials
-   * @return {Promise<HydratedDocument<User>>} - The updated user
+   * @param {string} userId - the userId of the user to update
+   * @param {Object} userDetails - an object with the user's updated credentials
+   * @return {Promise<HydratedDocument<User>>} - the updated user
    */
   static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({_id: userId});
@@ -82,9 +82,9 @@ class UserCollection {
   }
 
   /**
-   * Delete a user from the collection.
+   * Delete a user from the collection
    *
-   * @param {string} userId - The userId of user to delete
+   * @param {string} userId - the userId of user to delete
    * @return {Promise<Boolean>} - true if the user has been deleted, false otherwise
    */
   static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
