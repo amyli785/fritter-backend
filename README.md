@@ -467,12 +467,6 @@ The following api routes will be implemented:
 - `400` if `member` is missing in the req
 - `409` if the group `name` did not contain `member` or `member` is the user
 
-#### `GET /api/freets` - Get all the freets
-
-**Returns**
-
-- an array of objects with the details of all freets sorted in descending order by date modified
-
 #### `GET /api/freets?freetIds=id1,id2,...` - Get freets by freetIds
 
 **Returns**
@@ -513,41 +507,6 @@ The following api routes will be implemented:
 - `403` if the user is not logged in
 - `400` if the `content`, `audience`, or `responseTo` is in the wrong format
 - `404` if the `responseTo` cannot be found that the user can view or any of the groups in `audience` cannot be found for the user
-
-<!--
-
-#### `DELETE /api/freets/:freetId?` - Delete an existing freet
-
-**Returns**
-
-- a success message
-
-**Throws**
-
-- `403` if the user is not logged in
-- `403` if the user is not the author of the freet
-- `404` if the `freetId` is invalid
-
-#### `PUT /api/freets/:freetId?` - Update an existing freet
-
-**Body**
-
-- `content` _{string}_ - The new content of the freet
-
-**Returns**
-
-- a success message
-- an object with the details of the updated freet
-
-**Throws**
-
-- `403` if the user is not logged in
-- `404` if the `freetId` is invalid
-- `403` if the user is not the author of the freet
-- `400` if the new freet `content` is empty or a stream of empty spaces
-- `413` if the new freet `content` is more than 140 characters long
-
--->
 
 #### `GET /api/filters` - View the user's filters
 
@@ -618,18 +577,24 @@ The following api routes will be implemented:
 - `400` if `filterId` is in the wrong format
 - `404` if `filterId` cannot be found or is not associated with the user
 
-<!-- #### `GET /api/filter?expression=EXPRESSION` - Get the freets that match the filter expression
+#### `GET /api/feed` - See all freets visible to the user
 
 **Returns**
 
-- List of objects that the user has rights to view that match the expression, in descending order by date posted
+- an array of objects with the details of all freets that the user can view in descending order by date modified
 
 **Throws**
 
-- `404` if the `expression` is invalid -->
+- `403` if the user is not logged in
 
-#### `GET /api/feed` - Get the list of tabs for the user
+#### `GET /api/feed/:filterId` - See the freets matching the filter and visible to the user
 
 **Returns**
 
-- List of tab objects, including only the default "all" tab if the user is not logged in
+- an array of objects with the details of freets that match the filter that the user can view in descending order by date modified
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if `filterId` is in the wrong format
+- `404` if `filterId` cannot be found or is not associated with the user

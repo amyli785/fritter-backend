@@ -11,7 +11,7 @@ const router = express.Router();
  * 
  * @name GET /api/filters
  * 
- * @return {FilterModel[]} - an array of objects with the details of the filter
+ * @return {Filter[]} - an array of objects with the details of the filter
  * @throws {403} - if the user is not logged in
  */
 router.get(
@@ -30,7 +30,7 @@ router.get(
  * 
  * @name GET /api/filters/:filterId
  * 
- * @return {FilterModel} - an object with the details of the filter
+ * @return {Filter} - an object with the details of the filter
  * @throws {403} - if the user is not logged in
  * @throws {400} - if `filterId` is in the wrong format
  * @throws {404} - if `filterId` cannot be found or is not associated with the user
@@ -54,7 +54,7 @@ router.get(
  * 
  * @param {string} `expression` - the boolean-like expression of the filter
  * @param {string} `name` - a name for the filter
- * @return {FilterModel} - an object with the details of the filter
+ * @return {Filter} - an object with the details of the filter
  * @throws {403} - if the user is not logged in
  * @throws {400} - if the `expression` or `name` is in the wrong format
  */
@@ -78,7 +78,7 @@ router.post(
  * 
  * @param {string} `expression` - the new boolean-like expression of the filter
  * @param {string} `name` - the new name for the filter
- * @return {FilterModel} - an object with the details of the updated filter
+ * @return {Filter} - an object with the details of the updated filter
  * @throws {403} - if the user is not logged in
  * @throws {400} - if `filterId`, `expression`, or `name` is in the wrong format
  * @throws {404} - if `filterId` cannot be found or is not associated with the user

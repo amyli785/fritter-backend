@@ -7,9 +7,9 @@ import FreetCollection from './collection';
 /**
  * Checks if a freet with freetId exists and is viewable by the given userId
  * 
- * @param freetId the id of the freet, a valid object id
- * @param userId the id of the user, a valid object id
- * @returns true iff the freet exists and can be viewed by the user
+ * @param {string} freetId - the id of the freet, a valid object id
+ * @param {string} userId - the id of the user, a valid object id
+ * @returns {Promise<boolean>} - true iff the freet exists and can be viewed by the user
  */
 async function FreetIdExistsViewableForUserId (freetId: Types.ObjectId | string, userId: Types.ObjectId | string): Promise<boolean> {
   const freet = await FreetCollection.findOne(freetId);
@@ -178,6 +178,7 @@ const areFreetsExistViewable = async (req: Request, res: Response, next: NextFun
 };
 
 export {
+  FreetIdExistsViewableForUserId,
   isFreetExistsViewable,
   isValidFreetContent,
   isValidFreetAudience,

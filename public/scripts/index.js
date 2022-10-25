@@ -51,7 +51,6 @@ const formsAndHandlers = {
   'delete-group': deleteGroup,
   'add-group-member': addGroupMember,
   'delete-group-member': deleteGroupMember,
-  'view-all-freets': viewAllFreets,
   'view-freets': viewFreets,
   'view-freet': viewFreet,
   'create-freet': createFreet,
@@ -60,6 +59,7 @@ const formsAndHandlers = {
   'create-filter': createFilter,
   'update-filter': updateFilter,
   'delete-filter': deleteFilter,
+  'view-feed': viewFeed,
 };
 
 // Attach handlers to forms
