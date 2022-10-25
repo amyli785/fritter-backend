@@ -1,8 +1,10 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
+import { BooleanExpression, AuthorExpression, TagExpression, NotExpression, AndExpression, OrExpression } from '../expression/BooleanExpression';
 import { parse } from '../expression/parser';
 import FreetCollection from '../freet/collection';
 import FilterCollection from '../filter/collection';
+import FollowCollection from '../follow/collection';
 import * as userValidator from '../user/middleware';
 import * as filterValidator from '../filter/middleware';
 import * as feedValidator from './middleware';
@@ -36,6 +38,14 @@ router.get(
 );
 
 /**
+ * See the visible freets by accounts that the user is following
+ * 
+ * @name GET /api/feed/following
+ * 
+ * @return {FreetResponse[]} - an array of objects with the details of freets that are by the user's following that the user can view in descending order by date modified
+ * @throws {403} - if the user is not logged in
+ */
+/**
  * See the freets matching the filter and visible to the user
  * 
  * @name GET /api/feed/:filterId
@@ -49,6 +59,23 @@ router.get(
 	'/:filterId',
 	[
 		userValidator.isUserLoggedIn,
+	],
+	async (req: Request, res: Response, next: NextFunction) => {
+		if (req.params.filterId !== 'following') {
+			next();
+			return;
+		}
+
+		const followees = await FollowCollection.findAllFollowees(req.session.userId);
+		const authorExprs: Array<BooleanExpression> = followees.map((follow) => new AuthorExpression(follow.followeeId._id.toString()));
+		const booleanExpr = authorExprs.reduce((sofar, authorExpr) => new OrExpression(sofar, authorExpr));
+		const freetIds = await booleanExpr.freetIds();
+		const freetIdsViewable = await feedValidator.FindViewableFreets(freetIds, req.session.userId);
+		const freetsViewable = await FreetCollection.findAllByIds(freetIdsViewable);
+		const response = freetsViewable.map(freetUtil.constructFreetResponse);
+		res.status(200).json(response);
+	},
+	[
 		filterValidator.isFilterExistsAndOwned,
 	],
 	async (req: Request, res: Response) => {

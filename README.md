@@ -587,6 +587,16 @@ The following api routes will be implemented:
 
 - `403` if the user is not logged in
 
+#### `GET /api/feed/following` - See the visible freets by accounts that the user is following
+
+**Returns**
+
+- an array of objects with the details of freets that are by the user's following that the user can view in descending order by date modified
+
+**Throws**
+
+- `403` if the user is not logged in
+
 #### `GET /api/feed/:filterId` - See the freets matching the filter and visible to the user
 
 **Returns**
